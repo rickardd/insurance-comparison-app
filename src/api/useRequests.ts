@@ -25,3 +25,26 @@ export const useGetClients = () => {
     queryFn: fetchClients,
   });
 };
+
+interface Company {
+  companyId: string;
+  company_name: string;
+  contact_email: string;
+}
+
+export const useGetCompanies = () => {
+  const fetchClients = async (): Promise<Company[]> => {
+    const companiesCollection = collection(db, "insurance_companies");
+    const companySnapshot = await getDocs(companiesCollection);
+
+    return companySnapshot.docs.map((doc) => ({
+      companyId: doc.id,
+      ...doc.data(),
+    })) as Company[];
+  };
+
+  return useQuery({
+    queryKey: ["clients"],
+    queryFn: fetchClients,
+  });
+};

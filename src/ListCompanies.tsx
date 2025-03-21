@@ -1,29 +1,10 @@
-import React, { useEffect, useState } from "react";
-import { db } from "./firebase";
-import { collection, getDocs } from "firebase/firestore";
-
-interface Company {
-  companyId: string;
-  company_name: string;
-  contact_email: string;
-}
+import { useState } from "react";
+import { useGetCompanies } from "./api/useRequests";
 
 const ListCompanies: React.FC = () => {
-  const [companies, setCompanies] = useState<Company[]>([]);
   const [selectedCompanies, setSelectedCompanies] = useState<Set<string>>(new Set());
 
-  useEffect(() => {
-    const fetchCompanies = async () => {
-      const companiesCollection = collection(db, "insurance_companies");
-      const companySnapshot = await getDocs(companiesCollection);
-      const companyList = companySnapshot.docs.map((doc) => ({
-        companyId: doc.id,
-        ...doc.data(),
-      })) as Company[];
-      setCompanies(companyList);
-    };
-    fetchCompanies();
-  }, []);
+  const { data: companies = [], isLoading } = useGetCompanies();
 
   const toggleSelection = (companyId: string) => {
     const newSelection = new Set(selectedCompanies);
@@ -42,7 +23,7 @@ const ListCompanies: React.FC = () => {
 
   return (
     <div>
-      <h2>List of Insurance Companies</h2>
+      <h2>List of Insurance Companies {isLoading && "LOADING..."}</h2>
       <table>
         <thead>
           <tr>
