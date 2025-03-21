@@ -108,7 +108,7 @@ service cloud.firestore {
     match /insurance_companies/{companyId} {
       allow read: if request.auth != null; // Allow read if authenticated
     }
-  }
+   }
 }
 ```
 
@@ -124,3 +124,17 @@ service cloud.firestore {
 ## Clean up
 
 Maybe we can remove the public folder in favor of src folder.
+
+## Data Structure
+
+- Token - store in secure cookie
+- User (logged in user) zustand store (useAuthStore)
+- Fire store queries cached and stored with react query
+- Settings and similar, e.g selected company-ids stored in zustand useAppStore
+- Compare-insurances view will used cached react-query data.
+
+## Questins/ToDos
+
+- Are we not using the token atm? Should we?
+- Add GitHub Cli
+- Add specs

@@ -16,9 +16,7 @@ const ListClients: React.FC = () => {
     setSelectedClients(newSelection);
   };
 
-  const handleCompare = () => {
-    console.log("Selected Clients for Comparison:", Array.from(selectedClients));
-  };
+  const handleCompare = () => {};
 
   if (isLoading) {
     return <div>Loading clients...</div>;

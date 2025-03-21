@@ -3,7 +3,7 @@ import { auth } from "./firebase";
 import { signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 
 const Login: React.FC = () => {
-  const [email, setEmail] = useState("hello@hello.com");
+  const [email, setEmail] = useState("broker1@mail.com");
   const [password, setPassword] = useState("password");
 
   const handleLogin = async () => {

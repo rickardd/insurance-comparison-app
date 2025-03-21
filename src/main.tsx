@@ -73,7 +73,7 @@ root.render(
           }
         />
         <Route
-          path="/comparison"
+          path="/compare-companies"
           element={
             <ProtectedRoute>
               <ComparisonView selectedCompanies={[]} />

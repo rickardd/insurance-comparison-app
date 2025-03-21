@@ -1,10 +1,14 @@
 import { useState } from "react";
 import { useGetCompanies } from "./api/useRequests";
+import { useAppStore } from "./store/appStore";
+import { useNavigate } from "react-router-dom";
 
 const ListCompanies: React.FC = () => {
+  const navigate = useNavigate();
   const [selectedCompanies, setSelectedCompanies] = useState<Set<string>>(new Set());
-
   const { data: companies = [], isLoading } = useGetCompanies();
+  const setSelectedInsurances = useAppStore((state) => state.setSelectedInsurances);
+  // const history = useHistory();
 
   const toggleSelection = (companyId: string) => {
     const newSelection = new Set(selectedCompanies);
@@ -17,8 +21,9 @@ const ListCompanies: React.FC = () => {
   };
 
   const handleCompare = () => {
-    // You can implement the logic to navigate to the ComparisonView with selected companies
-    console.log("Selected Companies for Comparison:", Array.from(selectedCompanies));
+    const selectedIds = Array.from(selectedCompanies);
+    setSelectedInsurances(selectedIds);
+    navigate("/compare-companies");
   };
 
   return (

@@ -26,7 +26,7 @@ export const useGetClients = () => {
   });
 };
 
-interface Company {
+export interface Company {
   companyId: string;
   company_name: string;
   contact_email: string;
@@ -46,5 +46,13 @@ export const useGetCompanies = () => {
   return useQuery({
     queryKey: ["clients"],
     queryFn: fetchClients,
+  });
+};
+
+export const useGetCompaniesByIds = (ids: string[]) => {
+  const { data: companies } = useGetCompanies();
+
+  return companies?.filter((company) => {
+    return ids.includes(company.companyId);
   });
 };
