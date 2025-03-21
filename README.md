@@ -120,3 +120,7 @@ service cloud.firestore {
 ## Deploy for production.
 
 - Ensure the build script is using `npm run build`
+
+## Clean up
+
+Maybe we can remove the public folder in favor of src folder.

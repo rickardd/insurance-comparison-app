@@ -8,15 +8,28 @@ import ListCompanies from "./ListCompanies";
 import ComparisonView from "./ComparisonView";
 import { useAuthStore } from "./store/authStore";
 import { createRoot } from "react-dom/client";
+import ListClients from "./ListClients";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 const ProtectedRoute: React.FC<{ children: JSX.Element }> = ({ children }) => {
+  const queryClient = new QueryClient();
   const { user, loading } = useAuthStore();
 
   if (loading) {
     return <div>Loading...</div>; // You can show a loading spinner here
   }
 
-  return user ? children : <Login />;
+  return user ? <QueryClientProvider client={queryClient}>{children}</QueryClientProvider> : <Login />;
+};
+
+const RootPage = () => {
+  const { user, loading } = useAuthStore();
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  return user ? <App /> : <Login />;
 };
 
 // In your main render
@@ -26,8 +39,7 @@ root.render(
   <StrictMode>
     <Router>
       <Routes>
-        <Route path="/" element={<App />} />
-        <Route path="/login" element={<Login />} />
+        <Route path="/" element={<RootPage />} />
         <Route
           path="/create-client"
           element={
@@ -49,6 +61,14 @@ root.render(
           element={
             <ProtectedRoute>
               <ListCompanies />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/list-clients"
+          element={
+            <ProtectedRoute>
+              <ListClients />
             </ProtectedRoute>
           }
         />
