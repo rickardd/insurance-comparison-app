@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useDeleteClient, useGetClientById, useUpdateClient } from "./api/useRequests";
+import { toast } from "react-toastify";
 
 interface EditClientProps {
   onClientUpdated: () => void;
 }
 
 const EditClient: React.FC<EditClientProps> = () => {
+  // const notify = () => toast("Wow so easy!");
   const navigate = useNavigate();
   const { clientId } = useParams<{ clientId: string }>(); // Ensure clientId is typed
   const { data: client, isLoading, error } = useGetClientById(clientId || "");
@@ -34,7 +36,7 @@ const EditClient: React.FC<EditClientProps> = () => {
 
         navigate("/list-clients");
 
-        // send a toast message
+        toast("Client updated!");
       },
       onError: (error) => {
         console.error("Error updating client:", error);
@@ -47,6 +49,7 @@ const EditClient: React.FC<EditClientProps> = () => {
       onSuccess: () => {
         console.log("Client deleted successfully");
         setIsDeleted(true);
+        toast("Client deleted!");
       },
       onError: (error) => {
         console.error("Error deleting client:", error);
