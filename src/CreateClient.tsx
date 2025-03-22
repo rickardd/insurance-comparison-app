@@ -1,12 +1,10 @@
 import React, { useState } from "react";
 import { db } from "./firebase";
 import { collection, addDoc } from "firebase/firestore";
+import { useAuthStore } from "./store/authStore";
 
-interface CreateClientProps {
-  brokerId: string;
-}
-
-const CreateClient: React.FC<CreateClientProps> = ({ brokerId }) => {
+const CreateClient = () => {
+  const { user } = useAuthStore();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
 
@@ -16,7 +14,7 @@ const CreateClient: React.FC<CreateClientProps> = ({ brokerId }) => {
       await addDoc(collection(db, "clients"), {
         name,
         email,
-        brokerId,
+        brokerId: user?.uid,
       });
       // Clear form or redirect
       setName("");

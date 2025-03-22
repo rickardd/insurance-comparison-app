@@ -1,12 +1,7 @@
-import React from "react";
 import { useAppStore } from "./store/appStore";
 import { useGetCompaniesByIds } from "./api/useRequests";
 
-interface ComparisonViewProps {
-  selectedCompanies: string[];
-}
-
-const ComparisonView: React.FC<ComparisonViewProps> = () => {
+const ComparisonView = () => {
   const selectedInsurances = useAppStore((state) => state.selectedInsurances);
 
   const filteredCompanies = useGetCompaniesByIds(selectedInsurances);

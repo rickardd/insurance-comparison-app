@@ -40,3 +40,39 @@
 .read-the-docs {
   color: #888;
 }
+
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+h1 {
+  text-align: center;
+  margin: 20px 0;
+}
+
+nav {
+  background-color: #333; /* Dark background for the nav */
+  overflow: hidden; /* Clear floats */
+  margin-bottom: 24px;
+}
+
+nav a {
+  float: left; /* Align links to the left */
+  display: block; /* Make links fill the container */
+  color: white; /* White text color */
+  text-align: center; /* Center text */
+  padding: 14px 16px; /* Padding for links */
+  text-decoration: none; /* Remove underline */
+}
+
+nav a:hover {
+  background-color: #ddd; /* Light background on hover */
+  color: black; /* Change text color on hover */
+}
+
+nav a.active {
+  background-color: #4caf50; /* Active link color */
+  color: white; /* Active link text color */
+}
