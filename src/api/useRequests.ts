@@ -1,6 +1,7 @@
 import { db } from "../firebase";
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs, query, where } from "firebase/firestore";
 import { useQuery } from "@tanstack/react-query";
+import { useAuthStore } from "../store/authStore";
 
 interface Client {
   clientId: string;
@@ -10,9 +11,13 @@ interface Client {
 }
 
 export const useGetClients = () => {
+  const { user } = useAuthStore();
+
+  const userId = user?.uid;
   const fetchClients = async (): Promise<Client[]> => {
     const clientsCollection = collection(db, "clients");
-    const clientSnapshot = await getDocs(clientsCollection);
+    const clientsQuery = query(clientsCollection, where("brokerId", "==", userId));
+    const clientSnapshot = await getDocs(clientsQuery);
 
     return clientSnapshot.docs.map((doc) => ({
       clientId: doc.id,
@@ -21,8 +26,9 @@ export const useGetClients = () => {
   };
 
   return useQuery({
-    queryKey: ["clients"],
+    queryKey: ["clients", userId],
     queryFn: fetchClients,
+    enabled: !!userId, // Only run the query if userId is truthy
   });
 };
 
