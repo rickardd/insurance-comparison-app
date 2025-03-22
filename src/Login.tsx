@@ -1,15 +1,34 @@
 import React, { useState } from "react";
 import { auth } from "./firebase";
 import { signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import { setAccessToken, setRefreshToken, setUserUid } from "./utils/utils";
+import { useNavigate } from "react-router-dom";
+import { useAuthStore, User } from "./store/authStore";
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState("broker1@mail.com");
   const [password, setPassword] = useState("password");
+  const navigate = useNavigate();
+  const { setUser } = useAuthStore();
 
   const handleLogin = async () => {
     try {
-      await signInWithEmailAndPassword(auth, email, password);
+      const userCredentials = await signInWithEmailAndPassword(auth, email, password);
+
+      const user = userCredentials?.user;
+      const token = user?.accessToken;
+      const refreshToken = user?.refreshToken;
+
       // Redirect to home or another page
+
+      const appUser: User = { email: user.email, name: user.displayName, photoURL: user.photoURL, phoneNumber: user.phoneNumber };
+
+      setUser(appUser);
+      setAccessToken(token);
+      setRefreshToken(refreshToken);
+      setUserUid(user.uid);
+
+      navigate("/", { replace: true });
     } catch (error) {
       console.error("Error logging in:", error);
     }

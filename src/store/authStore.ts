@@ -1,6 +1,11 @@
 import { create } from "zustand";
-import { auth } from "../firebase";
-import { onAuthStateChanged, User } from "firebase/auth";
+
+export interface User {
+  name: string | null;
+  email: string | null;
+  photoURL: string | null;
+  phoneNumber: string | null;
+}
 
 interface AuthState {
   user: User | null;
@@ -13,9 +18,3 @@ export const useAuthStore = create<AuthState>((set) => ({
   loading: true,
   setUser: (user) => set({ user }),
 }));
-
-// Subscribe to Firebase auth state changes
-onAuthStateChanged(auth, (user) => {
-  useAuthStore.getState().setUser(user);
-  useAuthStore.setState({ loading: false });
-});

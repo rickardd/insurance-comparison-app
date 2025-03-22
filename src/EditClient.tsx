@@ -1,49 +1,89 @@
 import React, { useEffect, useState } from "react";
-import { db } from "./firebase";
-import { doc, getDoc, updateDoc, deleteDoc } from "firebase/firestore";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { useDeleteClient, useGetClientById, useUpdateClient } from "./api/useRequests";
 
 interface EditClientProps {
-  clientId: string;
   onClientUpdated: () => void;
 }
 
-const EditClient: React.FC<EditClientProps> = ({ clientId, onClientUpdated }) => {
+const EditClient: React.FC<EditClientProps> = () => {
+  const navigate = useNavigate();
+  const { clientId } = useParams<{ clientId: string }>(); // Ensure clientId is typed
+  const { data: client, isLoading, error } = useGetClientById(clientId || "");
+
+  const updateClientMutation = useUpdateClient(clientId || "");
+  const deleteClientMutation = useDeleteClient(clientId || "");
+
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [isDeleted, setIsDeleted] = useState(false);
 
   useEffect(() => {
-    const fetchClient = async () => {
-      const clientDoc = doc(db, "clients", clientId);
-      const clientData = await getDoc(clientDoc);
-      if (clientData.exists()) {
-        setName(clientData.data()?.name);
-        setEmail(clientData.data()?.email);
-      }
-    };
-    fetchClient();
-  }, [clientId]);
+    if (client) {
+      setName(client.name);
+      setEmail(client.email);
+    }
+  }, [client]);
 
-  const handleUpdate = async (e: React.FormEvent) => {
-    e.preventDefault();
-    const clientDoc = doc(db, "clients", clientId);
-    await updateDoc(clientDoc, { name, email });
-    onClientUpdated();
+  const handleUpdate = (e: React.FormEvent) => {
+    e.preventDefault(); // Prevent default form submission
+    const updatedData = { name, email }; // updated values from state
+    updateClientMutation.mutate(updatedData, {
+      onSuccess: () => {
+        console.log("Client updated successfully");
+
+        navigate("/list-clients");
+
+        // send a toast message
+      },
+      onError: (error) => {
+        console.error("Error updating client:", error);
+      },
+    });
   };
 
-  const handleDelete = async () => {
-    const clientDoc = doc(db, "clients", clientId);
-    await deleteDoc(clientDoc);
-    onClientUpdated();
+  const handleDelete = () => {
+    deleteClientMutation.mutate(undefined, {
+      onSuccess: () => {
+        console.log("Client deleted successfully");
+        setIsDeleted(true);
+      },
+      onError: (error) => {
+        console.error("Error deleting client:", error);
+      },
+    });
   };
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (isDeleted) {
+    return (
+      <>
+        <div>Deleted!!!</div>
+        <Link to="/list-clients">Go to clients</Link>
+      </>
+    );
+  }
+
+  if (error) {
+    return <div>Error fetching client: {error.message}</div>;
+  }
 
   return (
     <div>
       <form onSubmit={handleUpdate}>
         <input type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="Client Name" required />
         <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Client Email" required />
-        <button type="submit">Update Client</button>
+        <button type="submit">submit</button>
+        <button type="submit" disabled={updateClientMutation.isPending}>
+          {updateClientMutation.isPending ? "Updating..." : "Update Client"}
+        </button>
       </form>
-      <button onClick={handleDelete}>Delete Client</button>
+      <button onClick={handleDelete} disabled={deleteClientMutation.isPending}>
+        {deleteClientMutation.isPending ? "Deleting..." : "Delete Client"}
+      </button>
     </div>
   );
 };

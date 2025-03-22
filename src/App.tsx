@@ -1,15 +1,14 @@
+import { Outlet } from "react-router-dom";
 import "./App.css";
-import { Link, Outlet } from "react-router-dom";
+import { MainMenu } from "./MainMenu";
+import { useAuthStore } from "./store/authStore";
 
 function App() {
+  const { user } = useAuthStore();
   return (
     <div>
-      <h1>Insurance Comparison Tool</h1>
-      <nav>
-        <Link to="/create-client">Create Client</Link>
-        <Link to="/list-clients">List Clients</Link>
-        <Link to="/list-companies">List Companies</Link>
-      </nav>
+      <h1>Welcome ({user?.name})</h1>
+      <MainMenu />
 
       <Outlet />
     </div>

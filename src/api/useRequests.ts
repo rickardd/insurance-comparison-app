@@ -1,7 +1,7 @@
 import { db } from "../firebase";
-import { collection, getDocs, query, where } from "firebase/firestore";
-import { useQuery } from "@tanstack/react-query";
-import { useAuthStore } from "../store/authStore";
+import { collection, deleteDoc, doc, getDoc, getDocs, query, setDoc, where } from "firebase/firestore";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { getUserUid } from "../utils/utils";
 
 interface Client {
   clientId: string;
@@ -10,10 +10,9 @@ interface Client {
   email: string;
 }
 
+// GET CLIENTS
 export const useGetClients = () => {
-  const { user } = useAuthStore();
-
-  const userId = user?.uid;
+  const userId = getUserUid();
   const fetchClients = async (): Promise<Client[]> => {
     const clientsCollection = collection(db, "clients");
     const clientsQuery = query(clientsCollection, where("brokerId", "==", userId));
@@ -29,6 +28,47 @@ export const useGetClients = () => {
     queryKey: ["clients", userId],
     queryFn: fetchClients,
     enabled: !!userId, // Only run the query if userId is truthy
+  });
+};
+
+// GET CLIENT
+export const useGetClientById = (clientId: string) => {
+  const userId = getUserUid();
+  const fetchClient = async (): Promise<Client> => {
+    const clientDoc = doc(db, "clients", clientId);
+    const clientSnapshot = await getDoc(clientDoc);
+
+    return clientSnapshot.data() as Client;
+  };
+
+  return useQuery({
+    queryKey: ["client", userId, clientId],
+    queryFn: fetchClient,
+    enabled: !!userId && !!clientId, // Only run the query if userId is truthy
+  });
+};
+
+// UPDATE CLIENT
+export const useUpdateClient = (clientId: string) => {
+  const updateClient = async (clientData: Partial<Client>): Promise<void> => {
+    const clientDoc = doc(db, "clients", clientId);
+    await setDoc(clientDoc, clientData, { merge: true }); // Merge to update only specific fields
+  };
+
+  return useMutation({
+    mutationFn: updateClient,
+  });
+};
+
+// DELETE CLIENT
+export const useDeleteClient = (clientId: string) => {
+  const deleteClient = async () => {
+    const clientDoc = doc(db, "clients", clientId);
+    await deleteDoc(clientDoc);
+  };
+
+  return useMutation({
+    mutationFn: deleteClient,
   });
 };
 

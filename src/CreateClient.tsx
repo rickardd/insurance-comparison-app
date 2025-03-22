@@ -1,20 +1,20 @@
 import React, { useState } from "react";
 import { db } from "./firebase";
 import { collection, addDoc } from "firebase/firestore";
-import { useAuthStore } from "./store/authStore";
+import { getUserUid } from "./utils/utils";
 
 const CreateClient = () => {
-  const { user } = useAuthStore();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
     try {
       await addDoc(collection(db, "clients"), {
         name,
         email,
-        brokerId: user?.uid,
+        brokerId: getUserUid(),
       });
       // Clear form or redirect
       setName("");
