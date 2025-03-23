@@ -44,16 +44,7 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Test env variables
-        run: |
-          echo "apiKey: '${{ secrets.FIREBASE_API_KEY }}'" 
-          echo "authDomain: '${{ secrets.FIREBASE_AUTH_DOMAIN }}'" 
-          echo "projectId: '${{ secrets.FIREBASE_PROJECT_ID }}'" 
-          echo "storageBucket: '${{ secrets.FIREBASE_STORAGE_BUCKET }}'" 
-          echo "messagingSenderId: '${{ secrets.FIREBASE_MESSAGING_SENDER_ID }}'" 
-          echo "appId: '${{ secrets.FIREBASE_APP_ID }}'" 
-          echo "measurementId: '${{ secrets.FIREBASE_MEASUREMENT_ID }}'"
-
+      # ToDo: See if this can be removed. Firebase.ts should be enough
       - name: Generate firebase.ts
         run: |
           echo "import { initializeApp } from 'firebase/app';" > src/firebase.ts
@@ -84,6 +75,6 @@ jobs:
         run: npm run build
 
       - name: Deploy to Firebase
-        run: npm run firebase deploy
+        run: npm run firebase:deploy
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }} # Make sure to set this secret in your repository settings
