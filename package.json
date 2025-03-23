@@ -9,7 +9,7 @@
     "lint": "eslint .",
     "test": "vitest",
     "preview": "vite preview",
-    "firebase:deploy": "firebase deploy"
+    "firebase:deploy": "npx firebase deploy"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.69.0",
