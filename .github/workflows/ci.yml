@@ -56,7 +56,7 @@ jobs:
 
       - name: Generate firebase.ts
         run: |
-           echo "import { initializeApp } from 'firebase/app';" > src/firebase.ts
+          echo "import { initializeApp } from 'firebase/app';" > src/firebase.ts
           echo "import { getAuth } from 'firebase/auth';" >> src/firebase.ts
           echo "import { getFirestore } from 'firebase/firestore';" >> src/firebase.ts
           echo "" >> src/firebase.ts
