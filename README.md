@@ -151,3 +151,4 @@ Maybe we can remove the public folder in favor of src folder.
 - Add GitHub Cli
 - Add specs
 - Add we-are-using-cookies popup
+- Look into gitHub hosting of a preview for dev. Could be used for testing before merging to main. https://firebase.google.com/docs/hosting/github-integration
