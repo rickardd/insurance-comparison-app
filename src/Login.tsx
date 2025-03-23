@@ -11,6 +11,8 @@ const Login: React.FC = () => {
   const navigate = useNavigate();
   const { setUser } = useAuthStore();
 
+  console.log("new code");
+
   const handleLogin = async () => {
     try {
       const userCredentials = await signInWithEmailAndPassword(auth, email, password);
