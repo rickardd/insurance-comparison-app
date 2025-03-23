@@ -16,6 +16,7 @@ const Login: React.FC = () => {
       const userCredentials = await signInWithEmailAndPassword(auth, email, password);
 
       const user = userCredentials?.user;
+      // @ts-expect-error look into this
       const jwtAccessToken = user?.accessToken;
       const refreshToken = user?.refreshToken;
 

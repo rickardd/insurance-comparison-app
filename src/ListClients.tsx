@@ -1,6 +1,5 @@
-import React, { useState } from "react";
 import { useGetClients } from "./api/useRequests";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const ListClients: React.FC = () => {
   const { data: clients = [], isLoading } = useGetClients();

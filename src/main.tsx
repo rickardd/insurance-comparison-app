@@ -1,5 +1,5 @@
 // main.tsx
-import React, { StrictMode } from "react";
+import { StrictMode } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { createRoot } from "react-dom/client";
 import App from "./App";
@@ -31,7 +31,7 @@ root.render(
             path="/edit-client/:clientId"
             element={
               <ProtectedRoute>
-                <EditClient clientId="someClientId" onClientUpdated={() => {}} />
+                <EditClient />
               </ProtectedRoute>
             }
           />

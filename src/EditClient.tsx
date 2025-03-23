@@ -3,11 +3,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { useDeleteClient, useGetClientById, useUpdateClient } from "./api/useRequests";
 import { toast } from "react-toastify";
 
-interface EditClientProps {
-  onClientUpdated: () => void;
-}
-
-const EditClient: React.FC<EditClientProps> = () => {
+const EditClient = () => {
   const navigate = useNavigate();
   const { clientId } = useParams<{ clientId: string }>(); // Ensure clientId is typed
   const { data: client, isLoading, error } = useGetClientById(clientId || "");

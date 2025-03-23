@@ -1,7 +1,7 @@
 import { db } from "../firebase";
 import { collection, deleteDoc, doc, getDoc, getDocs, query, setDoc, where } from "firebase/firestore";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { getRefreshToken, getUserUid, isTokenExpired } from "../utils/utils";
+import { getRefreshToken, getUserUid } from "../utils/utils";
 import { useEffect, useState } from "react";
 
 interface Client {
@@ -168,7 +168,7 @@ export const useRefreshToken = () => {
   const CLIENT_ID = getUserUid();
 
   const [accessToken, setAccessToken] = useState(null);
-  const [expirationTime, setExpirationTime] = useState(null);
+  const [expirationTime, setExpirationTime] = useState<number | null>(null);
 
   const refreshAccessToken = async () => {
     const response = await fetch(`https://securetoken.googleapis.com/v1/token?key=${API_KEY}`, {
