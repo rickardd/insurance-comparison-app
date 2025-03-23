@@ -59,10 +59,10 @@ jobs:
           VITE_FIREBASE_APP_ID: ${{ secrets.FIREBASE_APP_ID }}
           VITE_FIREBASE_MEASUREMENT_ID: ${{ secrets.FIREBASE_MEASUREMENT_ID }}
 
-      - name: FIREBASE_TOKEN
-        run: echo "'${{ secrets.FIREBASE_TOKEN }}'"
-
       - name: Deploy to Firebase
-        run: npx firebase-tools deploy --project 161916150055 # project id
-        env:
-          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }} # Make sure to set this secret in your repository settings
+        run: |
+          echo "${{ secrets.FIREBASE_SERVICE_ACCOUNT_KEY }}" > $HOME/firebase-service-account.json
+          export GOOGLE_APPLICATION_CREDENTIALS="$HOME/firebase-service-account.json"
+          npx firebase-tools deploy --project 161916150055
+        # env:
+        #   FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }} # Make sure to set this secret in your repository settings
