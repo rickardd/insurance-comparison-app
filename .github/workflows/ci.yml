@@ -61,6 +61,7 @@ jobs:
 
       - name: Deploy to Firebase
         run: |
+          printf "%s" "${{ secrets.FIREBASE_SERVICE_ACCOUNT_KEY }}"
           printf "%s" "${{ secrets.FIREBASE_SERVICE_ACCOUNT_KEY }}" > $HOME/firebase-service-account.json
           export GOOGLE_APPLICATION_CREDENTIALS="$HOME/firebase-service-account.json"
           cat $HOME/firebase-service-account.json  
