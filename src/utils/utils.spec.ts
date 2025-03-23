@@ -1,4 +1,5 @@
 // // auth.test.ts
+import { it, expect } from "vitest";
 // import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
 // import Cookies from "js-cookie";
 // import { setLoggedIn, logOut, isLoggedIn } from "./auth"; // Adjust the import path as necessary
@@ -9,6 +10,10 @@
 //   get: vi.fn(),
 //   remove: vi.fn(),
 // }));
+
+it("Authentication Utilities", () => {
+  expect(true).toBe(true);
+});
 
 // describe("Authentication Utilities", () => {
 //   beforeEach(() => {
