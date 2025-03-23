@@ -112,7 +112,9 @@ service cloud.firestore {
 }
 ```
 
-create and point `firbase.json` deploy to vite's dist folder.
+## Prepare deploy
+
+create and point `firebase.json` deploy to vite's dist folder.
 
 ```json
 {
@@ -122,6 +124,14 @@ create and point `firbase.json` deploy to vite's dist folder.
   }
 }
 ```
+
+**Add env variables to gitHub**
+Add all needed variables to gitHub -> settings (for the repository) -> secretes and variables -> add repository secrets: add each key separatly.
+
+**Create a service account on firebase**
+Go to firebase project settings -> Service accounts: and generate a new private key.
+Go to Github and add the a new secret named e.g `FIREBASE_SERVICE_ACCOUNT_KEY` and past the downloaded json content there.
+Now we can use it to our gitHub action deploy step.
 
 ## Serve locally
 
