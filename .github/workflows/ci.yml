@@ -65,4 +65,5 @@ jobs:
           export GOOGLE_APPLICATION_CREDENTIALS="$HOME/firebase-service-account.json"
           npx firebase-tools deploy --project 161916150055
         env:
-          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }} # Make sure to set this secret in your repository settings
+          GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_KEY }}
+          # FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
