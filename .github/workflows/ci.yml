@@ -1,0 +1,53 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - "**" # This will trigger on all branches
+
+jobs:
+  build_and_lint_and_test:
+    if: github.ref != 'refs/heads/main' # Only run on branches that are not main
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        task: [build, lint, test] # Define tasks to run in parallel
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: "22" # Specify the Node.js version you want to use
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run ${{ matrix.task }}
+        run: npm run ${{ matrix.task }} # Execute the npm script defined in the strategy.matrix.tasks (e.g., build, lint, test)
+
+  deploy:
+    if: github.ref == 'refs/heads/main' # Only run on the main branch
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: "22" # Specify the Node.js version you want to use
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build
+        run: npm run build
+
+      - name: Deploy to Firebase
+        run: npm run firebase deploy
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }} # Make sure to set this secret in your repository settings

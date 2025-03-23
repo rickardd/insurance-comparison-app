@@ -150,3 +150,4 @@ Maybe we can remove the public folder in favor of src folder.
 - Are we not using the token atm? Should we?
 - Add GitHub Cli
 - Add specs
+- Add we-are-using-cookies popup
