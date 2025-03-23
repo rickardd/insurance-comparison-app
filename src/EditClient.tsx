@@ -8,7 +8,6 @@ interface EditClientProps {
 }
 
 const EditClient: React.FC<EditClientProps> = () => {
-  // const notify = () => toast("Wow so easy!");
   const navigate = useNavigate();
   const { clientId } = useParams<{ clientId: string }>(); // Ensure clientId is typed
   const { data: client, isLoading, error } = useGetClientById(clientId || "");
@@ -28,14 +27,11 @@ const EditClient: React.FC<EditClientProps> = () => {
   }, [client]);
 
   const handleUpdate = (e: React.FormEvent) => {
-    e.preventDefault(); // Prevent default form submission
-    const updatedData = { name, email }; // updated values from state
+    e.preventDefault();
+    const updatedData = { name, email }; // Updated values from state
     updateClientMutation.mutate(updatedData, {
       onSuccess: () => {
-        console.log("Client updated successfully");
-
         navigate("/list-clients");
-
         toast("Client updated!");
       },
       onError: (error) => {
@@ -79,7 +75,6 @@ const EditClient: React.FC<EditClientProps> = () => {
       <form onSubmit={handleUpdate}>
         <input type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="Client Name" required />
         <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Client Email" required />
-        <button type="submit">submit</button>
         <button type="submit" disabled={updateClientMutation.isPending}>
           {updateClientMutation.isPending ? "Updating..." : "Update Client"}
         </button>

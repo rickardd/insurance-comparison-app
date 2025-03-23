@@ -16,16 +16,18 @@ const Login: React.FC = () => {
       const userCredentials = await signInWithEmailAndPassword(auth, email, password);
 
       const user = userCredentials?.user;
-      const token = user?.accessToken;
+      const jwtAccessToken = user?.accessToken;
       const refreshToken = user?.refreshToken;
 
       // Redirect to home or another page
 
-      const appUser: User = { email: user.email, name: user.displayName, photoURL: user.photoURL, phoneNumber: user.phoneNumber };
+      // When we are setting up a user we only define email and password.
+      // Investigate how we add the displayName, photoUrl to the user.
+      const appUser: User = { email: user.email, displayName: user.displayName, photoURL: user.photoURL, phoneNumber: user.phoneNumber };
 
-      setUser(appUser);
-      setAccessToken(token);
-      setRefreshToken(refreshToken);
+      setUser(appUser); // Store
+      setAccessToken(jwtAccessToken); // Cookie, JWT
+      setRefreshToken(refreshToken); // Cookie, Regular token
       setUserUid(user.uid);
 
       navigate("/", { replace: true });
