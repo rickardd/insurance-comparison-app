@@ -11,7 +11,7 @@ const Login: React.FC = () => {
   const navigate = useNavigate();
   const { setUser } = useAuthStore();
 
-  console.log("new code");
+  console.log("new code from branch");
 
   const handleLogin = async () => {
     try {
