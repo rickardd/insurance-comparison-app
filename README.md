@@ -112,6 +112,17 @@ service cloud.firestore {
 }
 ```
 
+create and point `firbase.json` deploy to vite's dist folder.
+
+```json
+{
+  "hosting": {
+    "public": "dist",
+    "ignore": ["firebase.json", "**/.*", "**/node_modules/**"]
+  }
+}
+```
+
 ## Serve locally
 
 - `npm run dev`
@@ -119,7 +130,8 @@ service cloud.firestore {
 
 ## Deploy for production.
 
-- Ensure the build script is using `npm run build`
+- `npm run build`
+- `firebase deploy`
 
 ## Clean up
 
